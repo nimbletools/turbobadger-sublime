@@ -1,0 +1,79 @@
+# [PackageDev] target_format: plist, ext: tmLanguage
+---
+name: TurboBadger Node Markup
+scopeName: text.turbobadger
+fileTypes: [tb.txt]
+uuid: aa04f52c-a770-4ca8-833c-341c4d67633d
+
+patterns:
+- comment: Comments
+  name: comment.line.number-sign
+  match: ^\s*\#.*$
+
+- comment: Type names
+  begin: (^\s*[A-Z]{1,}|^)(\w+).?([\w\.\-\_]+)?
+  beginCaptures:
+    '1': { name: support.class }
+    '2': { name: support.class }
+    '3': { name: storage.modifier }
+  end: $
+  patterns:
+  - match: ([\w\-]+):\s*([^,$]+)*
+    captures:
+      '1': { name: entity.name.tag }
+      '2': { name: string.unquoted }
+
+- comment: Quoted strings
+  name: string.quoted
+  begin: \"
+  end: \"
+  patterns:
+  - name: constant.character.escape.string
+    match: \\\"
+
+- comment: Structure with values in a single line
+  begin: '^\s*([\w\-]+):'
+  beginCaptures:
+    '1': { name: entity.name.tag }
+  end: $
+  patterns:
+  - match: ([\w\-]+):\s*([^,$]*)
+    captures:
+      '1': { name: entity.name.tag }
+      '2': { name: string.unquoted }
+
+- comment: Property name without value
+  match: ^\s*([\w\-]+)$
+  captures:
+    '1': { name: entity.name.function }
+
+- comment: Hexadecimal colors
+  match: ^\s*([\w\-]+)\s+(#[0-9a-fA-F]{3,6})$
+  captures:
+    '1': { name: entity.name.tag }
+    '2': { name: constant.other }
+
+- comment: Number w/ optional unit type
+  match: ^\s*([\w\-]+)\s+([\-\.\d]+(px|pt|))$
+  captures:
+    '1': { name: entity.name.tag }
+    '2': { name: constant.numeric }
+
+- comment: Multiple numbers w/o unit type
+  match: ^\s*([\w\-]+)\s+([\-\.\d ]+)$
+  captures:
+    '1': { name: entity.name.tag }
+    '2': { name: constant.numeric }
+
+- comment: Translated string
+  match: ^\s*([\w\-]+)\s+(\@.*)$
+  captures:
+    '1': { name: entity.name.tag }
+    '2': { name: constant.language }
+
+- comment: Regular value
+  match: ^\s*([\w\-]+)\s+(.*)$
+  captures:
+    '1': { name: entity.name.tag }
+    '2': { name: string.unquoted }
+...
